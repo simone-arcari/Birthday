@@ -1,0 +1,945 @@
+/* =====================================================
+   MAIN.CSS - Lettera di Hogwarts per Serena
+   Mobile-First Responsive Design
+   ===================================================== */
+
+/* CSS Variables */
+:root {
+    /* Gryffindor Colors */
+    --gryffindor-red: #7C2D12;
+    --gryffindor-red-light: #9A3412;
+    --gryffindor-gold: #EAB308;
+    --gryffindor-gold-light: #FCD34D;
+    
+    /* Background Colors */
+    --bg-night: #0a0a1a;
+    --bg-night-light: #1a1a3a;
+    --bg-purple: #1a0a2e;
+    
+    /* Parchment Colors */
+    --parchment-bg: #F7F3E9;
+    --parchment-dark: #E8E0D0;
+    --parchment-border: #D4C4A8;
+    --text-dark: #2D1810;
+    --text-medium: #4A3728;
+    
+    /* UI Colors */
+    --white: #FFFFFF;
+    --white-transparent: rgba(255, 255, 255, 0.8);
+    
+    /* Typography */
+    --font-title: 'Cinzel', serif;
+    --font-body: 'Crimson Text', serif;
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.4s ease;
+    --transition-slow: 0.8s ease;
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    background: linear-gradient(135deg, var(--bg-night) 0%, var(--bg-purple) 50%, var(--bg-night-light) 100%);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* =====================================================
+   LAYOUT
+   ===================================================== */
+
+.main-container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-slow), visibility var(--transition-slow);
+    z-index: 1;
+}
+
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+/* =====================================================
+   AUDIO BUTTON
+   ===================================================== */
+
+.audio-btn {
+    position: fixed;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    width: 44px;
+    height: 44px;
+    border: 2px solid var(--gryffindor-gold);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    color: var(--gryffindor-gold);
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.audio-btn:hover,
+.audio-btn:focus {
+    background: var(--gryffindor-gold);
+    color: var(--bg-night);
+    transform: scale(1.1);
+}
+
+.audio-btn.playing .audio-icon::after {
+    content: '🔊';
+}
+
+/* =====================================================
+   PARTICLE CANVAS
+   ===================================================== */
+
+#particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+/* =====================================================
+   SECTION 1: INTRO SCREEN
+   ===================================================== */
+
+#intro-screen {
+    background: radial-gradient(ellipse at bottom, var(--bg-night-light) 0%, var(--bg-night) 100%);
+    overflow: hidden;
+}
+
+.stars-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, var(--white), transparent),
+        radial-gradient(2px 2px at 40px 70px, var(--gryffindor-gold-light), transparent),
+        radial-gradient(1px 1px at 90px 40px, var(--white), transparent),
+        radial-gradient(2px 2px at 130px 80px, var(--white), transparent),
+        radial-gradient(1px 1px at 160px 120px, var(--gryffindor-gold-light), transparent);
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: twinkle 4s ease-in-out infinite;
+}
+
+.hogwarts-silhouette {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30vh;
+    background: linear-gradient(to top, var(--bg-night) 0%, transparent 100%);
+    opacity: 0.8;
+}
+
+.intro-content {
+    text-align: center;
+    z-index: 10;
+}
+
+.intro-title {
+    font-family: var(--font-title);
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    font-weight: 600;
+    color: var(--gryffindor-gold);
+    text-shadow: 0 0 20px rgba(234, 179, 8, 0.5);
+    margin-bottom: var(--spacing-md);
+    animation: fadeInUp 1s ease-out;
+}
+
+.intro-subtitle {
+    font-size: clamp(1rem, 4vw, 1.3rem);
+    color: var(--white-transparent);
+    margin-bottom: var(--spacing-lg);
+    animation: fadeInUp 1s ease-out 0.3s backwards;
+}
+
+.tap-indicator {
+    display: flex;
+    justify-content: center;
+    animation: fadeInUp 1s ease-out 0.6s backwards;
+}
+
+.tap-circle {
+    width: 60px;
+    height: 60px;
+    border: 2px solid var(--gryffindor-gold);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* =====================================================
+   SECTION 2: OWL DELIVERY
+   ===================================================== */
+
+#owl-screen {
+    background: radial-gradient(ellipse at top, #0d1b2a 0%, var(--bg-night) 100%);
+}
+
+.night-sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.moon {
+    position: absolute;
+    top: 10%;
+    right: 15%;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at 30% 30%, #fffde7 0%, #fdd835 50%, #f9a825 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(253, 216, 53, 0.6), 0 0 80px rgba(253, 216, 53, 0.3);
+}
+
+.stars-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 10% 20%, var(--white), transparent),
+        radial-gradient(2px 2px at 30% 15%, var(--gryffindor-gold-light), transparent),
+        radial-gradient(1px 1px at 50% 25%, var(--white), transparent),
+        radial-gradient(2px 2px at 70% 10%, var(--white), transparent),
+        radial-gradient(1px 1px at 85% 30%, var(--gryffindor-gold-light), transparent),
+        radial-gradient(2px 2px at 15% 50%, var(--white), transparent),
+        radial-gradient(1px 1px at 90% 60%, var(--white), transparent);
+    animation: twinkle 3s ease-in-out infinite;
+}
+
+.owl-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    z-index: 10;
+}
+
+.owl {
+    position: absolute;
+    font-size: 4rem;
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+    transform: translateX(-100px);
+}
+
+.owl-body {
+    animation: wingFlap 0.3s ease-in-out infinite alternate;
+}
+
+.letter-carried {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 20px;
+    background: var(--parchment-bg);
+    border: 1px solid var(--parchment-border);
+    border-radius: 2px;
+}
+
+.delivery-text {
+    position: absolute;
+    bottom: 20%;
+    text-align: center;
+    width: 100%;
+    padding: 0 var(--spacing-md);
+}
+
+.delivery-text p {
+    font-family: var(--font-title);
+    font-size: clamp(1rem, 4vw, 1.3rem);
+    color: var(--gryffindor-gold);
+    opacity: 0;
+    animation: fadeIn 1s ease-out 0.5s forwards;
+}
+
+/* =====================================================
+   SECTION 3: SEALED LETTER
+   ===================================================== */
+
+#letter-sealed-screen {
+    background: radial-gradient(ellipse at center, var(--bg-night-light) 0%, var(--bg-night) 100%);
+}
+
+.envelope-container {
+    perspective: 1000px;
+}
+
+.envelope {
+    position: relative;
+    width: min(320px, 85vw);
+    height: min(220px, 60vw);
+    transform-style: preserve-3d;
+}
+
+.envelope-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #D4A574 0%, #C4956A 50%, #B8895E 100%);
+    border-radius: 4px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.envelope-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #E8D4B8 0%, #DCC4A8 100%);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--spacing-md);
+}
+
+.envelope-address {
+    text-align: center;
+    color: var(--text-dark);
+}
+
+.address-to {
+    font-family: var(--font-title);
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+    font-weight: 600;
+    color: var(--gryffindor-red);
+    margin-bottom: var(--spacing-xs);
+}
+
+.address-detail {
+    font-family: var(--font-body);
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    font-style: italic;
+    margin-bottom: 2px;
+}
+
+.wax-seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    z-index: 20;
+    transition: transform var(--transition-fast);
+}
+
+.wax-seal:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.wax-seal:active {
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+.seal-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, var(--gryffindor-gold) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: sealPulse 2s ease-in-out infinite;
+    opacity: 0.6;
+}
+
+.seal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    background: radial-gradient(circle at 30% 30%, #A52A2A 0%, #8B0000 50%, #5C0000 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        inset 0 2px 4px rgba(255, 255, 255, 0.2),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+        0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.seal-crest {
+    font-size: 2rem;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+}
+
+.seal-text {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-title);
+    font-size: 0.8rem;
+    color: var(--gryffindor-gold);
+    white-space: nowrap;
+    animation: fadeInOut 2s ease-in-out infinite;
+}
+
+/* =====================================================
+   SECTION 4: LETTER CONTENT
+   ===================================================== */
+
+#letter-content-screen {
+    background: radial-gradient(ellipse at center, var(--bg-night-light) 0%, var(--bg-night) 100%);
+    padding: var(--spacing-sm);
+    overflow-y: auto;
+}
+
+.parchment-container {
+    width: 100%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.parchment {
+    background: linear-gradient(180deg, var(--parchment-bg) 0%, var(--parchment-dark) 100%);
+    background-image: 
+        linear-gradient(180deg, var(--parchment-bg) 0%, var(--parchment-dark) 100%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+    border: 3px solid var(--parchment-border);
+    border-radius: 8px;
+    padding: var(--spacing-md);
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.4),
+        inset 0 0 20px rgba(0, 0, 0, 0.05);
+    color: var(--text-dark);
+}
+
+.parchment-header {
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--parchment-border);
+}
+
+.hogwarts-crest {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-xs);
+    text-shadow: 0 0 10px var(--gryffindor-gold);
+}
+
+.hogwarts-title {
+    font-family: var(--font-title);
+    font-size: clamp(0.9rem, 4vw, 1.3rem);
+    font-weight: 700;
+    color: var(--gryffindor-red);
+    letter-spacing: 2px;
+    margin-bottom: 2px;
+}
+
+.hogwarts-subtitle {
+    font-family: var(--font-title);
+    font-size: clamp(0.8rem, 3.5vw, 1.1rem);
+    font-weight: 600;
+    color: var(--gryffindor-red);
+    letter-spacing: 3px;
+}
+
+.letter-address-section {
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+    font-size: clamp(1rem, 4vw, 1.2rem);
+}
+
+.highlight-name {
+    color: var(--gryffindor-red);
+    font-weight: 600;
+    font-size: 1.2em;
+}
+
+.highlight-number {
+    color: var(--gryffindor-gold);
+    font-weight: 700;
+    font-size: 1.3em;
+    text-shadow: 0 0 5px rgba(234, 179, 8, 0.3);
+}
+
+.magic-age {
+    font-style: italic;
+    margin-top: var(--spacing-xs);
+}
+
+.letter-body {
+    line-height: 1.7;
+    font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+}
+
+.letter-body p {
+    margin-bottom: var(--spacing-sm);
+    text-align: justify;
+}
+
+.gryffindor-text {
+    color: var(--gryffindor-red);
+    font-weight: 600;
+}
+
+.romantic-section {
+    background: rgba(124, 45, 18, 0.05);
+    border-left: 3px solid var(--gryffindor-red);
+    padding: var(--spacing-sm);
+    margin: var(--spacing-md) 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.romantic-intro {
+    font-family: var(--font-title);
+    font-size: clamp(1rem, 4vw, 1.2rem);
+    color: var(--gryffindor-red);
+    margin-bottom: var(--spacing-sm) !important;
+}
+
+.dumbledore-quote {
+    font-style: italic;
+    text-align: center;
+    color: var(--text-medium);
+    border-top: 1px solid var(--parchment-border);
+    padding-top: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.letter-details {
+    text-align: center;
+    margin: var(--spacing-lg) 0;
+    padding: var(--spacing-md);
+    background: rgba(234, 179, 8, 0.1);
+    border-radius: 8px;
+    border: 2px dashed var(--gryffindor-gold);
+}
+
+.details-intro {
+    font-family: var(--font-title);
+    margin-bottom: var(--spacing-sm);
+}
+
+.restaurant-reveal {
+    margin: var(--spacing-md) 0;
+}
+
+.restaurant-name {
+    font-family: var(--font-title);
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
+    color: var(--gryffindor-red);
+    text-shadow: 0 0 10px rgba(234, 179, 8, 0.3);
+    margin-bottom: var(--spacing-xs);
+}
+
+.restaurant-address,
+.restaurant-city {
+    font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+    margin-bottom: 2px;
+}
+
+.appointment-details {
+    margin: var(--spacing-md) 0;
+    font-size: clamp(1rem, 4vw, 1.15rem);
+}
+
+.appointment-details p {
+    margin-bottom: var(--spacing-xs);
+}
+
+.detail-icon {
+    margin-right: var(--spacing-xs);
+}
+
+.dresscode {
+    font-style: italic;
+    color: var(--text-medium);
+    font-size: clamp(0.9rem, 3.5vw, 1rem);
+}
+
+.letter-signature {
+    text-align: center;
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 2px solid var(--parchment-border);
+}
+
+.signature-love {
+    font-size: clamp(1rem, 4vw, 1.15rem);
+    margin-bottom: var(--spacing-sm);
+}
+
+.signature-name {
+    font-family: var(--font-title);
+    font-size: clamp(1.2rem, 4.5vw, 1.4rem);
+    color: var(--gryffindor-red);
+    margin-bottom: var(--spacing-md);
+}
+
+.signature-divider {
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gryffindor-gold), transparent);
+    margin: var(--spacing-sm) auto;
+}
+
+.signature-ministry {
+    font-size: clamp(0.85rem, 3vw, 0.95rem);
+    color: var(--text-medium);
+}
+
+/* Magic Button */
+.magic-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    margin-top: var(--spacing-md);
+    font-family: var(--font-title);
+    font-size: clamp(1rem, 4vw, 1.2rem);
+    color: var(--bg-night);
+    background: linear-gradient(135deg, var(--gryffindor-gold) 0%, var(--gryffindor-gold-light) 100%);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(234, 179, 8, 0.4);
+    transition: all var(--transition-fast);
+    min-height: 50px;
+}
+
+.magic-button:hover,
+.magic-button:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(234, 179, 8, 0.6);
+}
+
+.magic-button:active {
+    transform: translateY(0);
+}
+
+.magic-button.secondary {
+    background: transparent;
+    color: var(--gryffindor-gold);
+    border: 2px solid var(--gryffindor-gold);
+}
+
+.magic-button.secondary:hover {
+    background: var(--gryffindor-gold);
+    color: var(--bg-night);
+}
+
+/* =====================================================
+   SECTION 5: COUNTDOWN
+   ===================================================== */
+
+#countdown-screen {
+    background: radial-gradient(ellipse at center, var(--bg-purple) 0%, var(--bg-night) 100%);
+    overflow-y: auto;
+}
+
+.celebration-container {
+    text-align: center;
+    padding: var(--spacing-md);
+    max-width: 500px;
+}
+
+.countdown-title {
+    font-family: var(--font-title);
+    font-size: clamp(1.3rem, 5vw, 2rem);
+    color: var(--gryffindor-gold);
+    text-shadow: 0 0 20px rgba(234, 179, 8, 0.5);
+    margin-bottom: var(--spacing-lg);
+}
+
+.candles-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-sm);
+}
+
+.candle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.candle-body {
+    width: 12px;
+    height: 35px;
+    background: linear-gradient(180deg, #FFF8E1 0%, #FFE082 50%, #FFB300 100%);
+    border-radius: 2px 2px 4px 4px;
+    position: relative;
+}
+
+.candle-flame {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 18px;
+    background: radial-gradient(ellipse at bottom, #FFEB3B 0%, #FF9800 50%, #FF5722 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    opacity: 0;
+    filter: blur(1px);
+    box-shadow: 0 0 10px #FF9800, 0 0 20px #FF5722;
+}
+
+.candle-flame.lit {
+    opacity: 1;
+    animation: flicker 0.5s ease-in-out infinite alternate;
+}
+
+.candle-number {
+    font-size: 0.6rem;
+    color: var(--gryffindor-gold);
+    margin-top: 4px;
+}
+
+.countdown-container {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--gryffindor-gold);
+    border-radius: 16px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.countdown-label {
+    font-family: var(--font-title);
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    color: var(--white-transparent);
+    margin-bottom: var(--spacing-sm);
+}
+
+.countdown-timer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.time-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 60px;
+}
+
+.time-value {
+    font-family: var(--font-title);
+    font-size: clamp(2rem, 8vw, 3rem);
+    font-weight: 700;
+    color: var(--gryffindor-gold);
+    text-shadow: 0 0 10px rgba(234, 179, 8, 0.5);
+    line-height: 1;
+}
+
+.time-label {
+    font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+    color: var(--white-transparent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.time-separator {
+    font-family: var(--font-title);
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    color: var(--gryffindor-gold);
+    animation: blink 1s ease-in-out infinite;
+}
+
+.final-message {
+    margin-bottom: var(--spacing-lg);
+}
+
+.final-message p {
+    font-family: var(--font-title);
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+    color: var(--gryffindor-gold);
+    margin-bottom: var(--spacing-xs);
+}
+
+.final-message .small-text {
+    font-family: var(--font-body);
+    font-size: clamp(0.9rem, 3.5vw, 1rem);
+    color: var(--white-transparent);
+    font-style: italic;
+}
+
+/* =====================================================
+   MEDIA QUERIES - TABLET
+   ===================================================== */
+
+@media (min-width: 768px) {
+    :root {
+        --spacing-md: 2rem;
+        --spacing-lg: 3rem;
+    }
+    
+    .moon {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .owl {
+        font-size: 5rem;
+    }
+    
+    .wax-seal {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .seal-content {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .seal-crest {
+        font-size: 2.5rem;
+    }
+    
+    .parchment {
+        padding: var(--spacing-lg);
+    }
+    
+    .candles-container {
+        grid-template-columns: repeat(8, 1fr);
+    }
+    
+    .candle-body {
+        width: 16px;
+        height: 45px;
+    }
+    
+    .time-block {
+        min-width: 80px;
+    }
+}
+
+/* =====================================================
+   MEDIA QUERIES - DESKTOP
+   ===================================================== */
+
+@media (min-width: 1024px) {
+    :root {
+        --spacing-lg: 4rem;
+        --spacing-xl: 5rem;
+    }
+    
+    .screen {
+        padding: var(--spacing-lg);
+    }
+    
+    .moon {
+        width: 100px;
+        height: 100px;
+        top: 15%;
+        right: 20%;
+    }
+    
+    .owl {
+        font-size: 6rem;
+    }
+    
+    .envelope {
+        width: 400px;
+        height: 280px;
+    }
+    
+    .wax-seal {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .seal-content {
+        width: 110px;
+        height: 110px;
+    }
+    
+    .seal-crest {
+        font-size: 3rem;
+    }
+    
+    .parchment-container {
+        max-height: 85vh;
+    }
+    
+    .candle-body {
+        width: 18px;
+        height: 50px;
+    }
+    
+    .candle-flame {
+        width: 12px;
+        height: 22px;
+        top: -18px;
+    }
+}
