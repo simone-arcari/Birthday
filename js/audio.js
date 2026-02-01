@@ -23,12 +23,15 @@ class MagicalAudioManager {
             console.warn('Web Audio API not supported:', e);
         }
         
-        // Musica di sottofondo - tema magico/fantasy royalty-free
-        // Usando link diretti che funzionano senza CORS
+        // Musica di sottofondo - stile magico/fantasy orchestrale
+        // Kevin MacLeod (incompetech.com) - Royalty Free, stile Harry Potter
         this.musicSources = {
-            hedwigsTheme: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-            magicalAmbience: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-            celebration: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+            // "Enchanted Valley" - atmosfera magica con archi e flauti
+            hedwigsTheme: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Enchanted%20Valley.mp3',
+            // "Ghost Story" - misterioso e incantato
+            magicalAmbience: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Ghost%20Story.mp3',
+            // "Merry Go" - festoso e celebrativo
+            celebration: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Merry%20Go.mp3'
         };
         
         this.preloadMusic();
