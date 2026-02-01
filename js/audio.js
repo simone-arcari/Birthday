@@ -24,10 +24,11 @@ class MagicalAudioManager {
         }
         
         // Musica di sottofondo - tema magico/fantasy royalty-free
+        // Usando link diretti che funzionano senza CORS
         this.musicSources = {
-            hedwigsTheme: 'https://cdn.pixabay.com/audio/2022/10/25/audio_032a7fde90.mp3',
-            magicalAmbience: 'https://cdn.pixabay.com/audio/2022/03/15/audio_8f1c8e1c87.mp3',
-            celebration: 'https://cdn.pixabay.com/audio/2021/08/04/audio_0625c1539c.mp3'
+            hedwigsTheme: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+            magicalAmbience: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+            celebration: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
         };
         
         this.preloadMusic();
@@ -41,13 +42,20 @@ class MagicalAudioManager {
             audio.volume = this.volume;
             audio.loop = true;
             audio.preload = 'auto';
-            audio.crossOrigin = 'anonymous';
             this.sounds[name] = audio;
+            
+            audio.addEventListener('canplaythrough', () => {
+                console.log('Audio pronto:', name);
+            });
+            
+            audio.addEventListener('error', (e) => {
+                console.error('Errore caricamento audio:', name, e);
+            });
         });
         
         this.backgroundMusic = this.sounds.hedwigsTheme;
         this.isLoaded = true;
-        console.log('Audio precaricato');
+        console.log('Audio manager inizializzato');
     }
 
     async resumeContext() {
@@ -76,11 +84,20 @@ class MagicalAudioManager {
         track.volume = this.isMuted ? 0 : volume;
         this.backgroundMusic = track;
         
+        console.log('Tentativo riproduzione:', trackName, 'volume:', track.volume, 'muted:', this.isMuted);
+        
         try {
-            await track.play();
-            console.log('Riproduzione:', trackName);
+            const playPromise = track.play();
+            if (playPromise !== undefined) {
+                await playPromise;
+                console.log('✅ Riproduzione avviata:', trackName);
+            }
         } catch (e) {
-            console.warn('Autoplay bloccato:', e);
+            console.error('❌ Errore riproduzione:', e.name, e.message);
+            // Se autoplay è bloccato, mostra un messaggio
+            if (e.name === 'NotAllowedError') {
+                console.log('Autoplay bloccato dal browser. Clicca di nuovo per avviare la musica.');
+            }
         }
     }
 
