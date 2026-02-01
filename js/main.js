@@ -237,11 +237,36 @@ function proceedFromLockScreen(e) {
 }
 
 /* =====================================================
+   PAGE TITLE MANAGEMENT
+   ===================================================== */
+
+function updatePageTitle(screenName) {
+    const favicon = document.getElementById('favicon');
+    
+    if (screenName === 'lock') {
+        // Generic title and favicon for lock screen - no spoilers!
+        document.title = 'Una Sorpresa per Te';
+        if (favicon) {
+            favicon.href = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>";
+        }
+    } else {
+        // Full title and owl favicon once unlocked
+        document.title = 'Una Lettera Magica per Te';
+        if (favicon) {
+            favicon.href = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦉</text></svg>";
+        }
+    }
+}
+
+/* =====================================================
    SCREEN MANAGEMENT
    ===================================================== */
 
 function showScreen(screenName) {
     console.log('Showing screen:', screenName);
+    
+    // Update page title based on screen
+    updatePageTitle(screenName);
     
     // Hide all screens
     Object.values(DOM.screens).forEach(screen => {
