@@ -7,7 +7,7 @@ const CONFIG = {
     
     // Imposta a TRUE per bypassare la lock screen
     // IMPORTANTE: Rimettere a FALSE prima di pubblicare!
-    BYPASS_LOCK_SCREEN: false,
+    BYPASS_LOCK_SCREEN: true,
     
     // ========== DATE E ORARI ==========
     
