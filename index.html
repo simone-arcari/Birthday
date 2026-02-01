@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Una sorpresa magica per Serena">
+    <meta name="theme-color" content="#1a0a2e">
+    
+    <title>✨ Una Lettera Magica per Te ✨</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦉</text></svg>">
+</head>
+<body>
+    <!-- Audio Control Button -->
+    <button id="audio-toggle" class="audio-btn" aria-label="Toggle audio">
+        <span class="audio-icon">🔇</span>
+    </button>
+
+    <!-- Particle Canvas -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        
+        <!-- SECTION 1: Intro Screen -->
+        <section id="intro-screen" class="screen active">
+            <div class="stars-background"></div>
+            <div class="hogwarts-silhouette"></div>
+            
+            <div class="intro-content">
+                <h1 class="intro-title">Una lettera sta arrivando...</h1>
+                <p class="intro-subtitle">Tocca lo schermo per iniziare la magia</p>
+                <div class="tap-indicator">
+                    <span class="tap-circle"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Owl Delivery -->
+        <section id="owl-screen" class="screen">
+            <div class="night-sky">
+                <div class="moon"></div>
+                <div class="stars-container"></div>
+            </div>
+            
+            <div class="owl-container">
+                <div id="hedwig" class="owl">
+                    <div class="owl-body">🦉</div>
+                    <div class="letter-carried"></div>
+                </div>
+            </div>
+            
+            <div class="delivery-text">
+                <p>Edvige sta consegnando qualcosa di speciale...</p>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Sealed Letter -->
+        <section id="letter-sealed-screen" class="screen">
+            <div class="envelope-container">
+                <div class="envelope">
+                    <div class="envelope-back"></div>
+                    <div class="envelope-front">
+                        <div class="envelope-address">
+                            <p class="address-to">Signorina Serena</p>
+                            <p class="address-detail">Il Divano Più Comodo</p>
+                            <p class="address-detail">Casa Dolce Casa</p>
+                        </div>
+                    </div>
+                    <div id="wax-seal" class="wax-seal">
+                        <div class="seal-glow"></div>
+                        <div class="seal-content">
+                            <span class="seal-crest">🦁</span>
+                        </div>
+                        <div class="seal-text">Tocca per aprire</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Letter Content -->
+        <section id="letter-content-screen" class="screen">
+            <div class="parchment-container">
+                <div class="parchment">
+                    <div class="parchment-header">
+                        <div class="hogwarts-crest">⚡</div>
+                        <h1 class="hogwarts-title">SCUOLA DI MAGIA E STREGONERIA</h1>
+                        <h2 class="hogwarts-subtitle">DI HOGWARTS</h2>
+                        <div class="header-decoration"></div>
+                    </div>
+                    
+                    <div class="letter-address-section">
+                        <p>Cara Signorina <span class="highlight-name">Serena</span>,</p>
+                        <p class="magic-age">Età: <span class="highlight-number">24</span> anni di pura magia</p>
+                    </div>
+                    
+                    <div class="letter-body" id="letter-text">
+                        <p>Siamo lieti di informarla che è stata selezionata per una <strong>missione speciale</strong> in occasione del suo 24° compleanno.</p>
+                        
+                        <p>Dopo ventiquattro anni di incantesimi nella vita babbana, è tempo di celebrare la sua magia in un luogo degno di una vera <span class="gryffindor-text">Grifondoro</span> come lei.</p>
+                        
+                        <div class="romantic-section">
+                            <p class="romantic-intro">Cara Serena, Strega del mio cuore,</p>
+                            
+                            <p>In questi anni insieme hai dimostrato di possedere la magia più rara: quella di rendere straordinaria ogni giornata al mio fianco.</p>
+                            
+                            <p>Come una vera Grifondoro, hai il coraggio di sognare, la forza di affrontare ogni sfida e la saggezza di vedere la bellezza anche nei momenti più semplici.</p>
+                            
+                            <p>Oggi, nel giorno in cui celebri <strong>24 anni di pura magia</strong>, ho preparato per te un'avventura degna della strega più straordinaria che io conosca.</p>
+                            
+                            <p class="dumbledore-quote">Preparati a vivere una serata che nemmeno Silente avrebbe saputo organizzare meglio.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="letter-details">
+                        <p class="details-intro">La sua presenza è richiesta presso:</p>
+                        
+                        <div class="restaurant-reveal">
+                            <h3 class="restaurant-name">✨ RISTORANTE INCANTUM ✨</h3>
+                            <p class="restaurant-address">Largo Russel, 8/11</p>
+                            <p class="restaurant-city">00137 Roma RM</p>
+                        </div>
+                        
+                        <div class="appointment-details">
+                            <p><span class="detail-icon">🕰️</span> Orario: <strong>19:15</strong> precise</p>
+                            <p><span class="detail-icon">📅</span> Data: <strong>2 Febbraio 2026</strong></p>
+                        </div>
+                        
+                        <p class="dresscode">Dresscode: Abbigliamento da strega elegante<br><em>(o abbigliamento babbano accettabile)</em></p>
+                    </div>
+                    
+                    <div class="letter-signature">
+                        <p class="signature-love">Con tutto il mio amore<br><em>(e un pizzico di Filtro d'Amore)</em>,</p>
+                        <p class="signature-name">Il tuo Mago del cuore ❤️</p>
+                        <div class="signature-divider"></div>
+                        <p class="signature-ministry">Cordiali saluti magici,<br><em>Il Ministero delle Celebrazioni di Compleanno</em></p>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="continue-btn" class="magic-button">
+                <span>Accetto questa Magia! ✨</span>
+            </button>
+        </section>
+
+        <!-- SECTION 5: Countdown & Candles -->
+        <section id="countdown-screen" class="screen">
+            <div class="celebration-container">
+                <h2 class="countdown-title">🎂 Buon 24° Compleanno Serena! 🎂</h2>
+                
+                <div class="candles-container" id="candles">
+                    <!-- 24 candles will be generated by JS -->
+                </div>
+                
+                <div class="countdown-container">
+                    <p class="countdown-label">La magia inizia tra:</p>
+                    <div class="countdown-timer" id="countdown">
+                        <div class="time-block">
+                            <span class="time-value" id="hours">00</span>
+                            <span class="time-label">Ore</span>
+                        </div>
+                        <div class="time-separator">:</div>
+                        <div class="time-block">
+                            <span class="time-value" id="minutes">00</span>
+                            <span class="time-label">Minuti</span>
+                        </div>
+                        <div class="time-separator">:</div>
+                        <div class="time-block">
+                            <span class="time-value" id="seconds">00</span>
+                            <span class="time-label">Secondi</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="final-message">
+                    <p>Ti amo, Serena! 💕</p>
+                    <p class="small-text">Non vedo l'ora di vivere questa serata magica insieme a te</p>
+                </div>
+                
+                <button id="restart-btn" class="magic-button secondary">
+                    <span>Rivivi la Magia 🔄</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/audio.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
