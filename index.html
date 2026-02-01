@@ -32,8 +32,44 @@
     <!-- Main Container -->
     <main class="main-container">
         
+        <!-- SECTION 0: Lock Screen - Countdown to 18:45 -->
+        <section id="lock-screen" class="screen active">
+            <div class="lock-background"></div>
+            
+            <div class="lock-content">
+                <div class="mystery-icon">✨</div>
+                <h1 class="lock-title">Qualcosa di speciale ti aspetta...</h1>
+                <p class="lock-subtitle">Ma non è ancora il momento.</p>
+                
+                <div class="lock-countdown-container">
+                    <p class="lock-countdown-label">Potrai scoprirlo tra:</p>
+                    <div class="lock-countdown">
+                        <div class="lock-time-unit">
+                            <span id="lock-hours" class="lock-time-value">00</span>
+                            <span class="lock-time-label">ore</span>
+                        </div>
+                        <span class="lock-separator">:</span>
+                        <div class="lock-time-unit">
+                            <span id="lock-minutes" class="lock-time-value">00</span>
+                            <span class="lock-time-label">min</span>
+                        </div>
+                        <span class="lock-separator">:</span>
+                        <div class="lock-time-unit">
+                            <span id="lock-seconds" class="lock-time-value">00</span>
+                            <span class="lock-time-label">sec</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="lock-patience">La pazienza è una virtù...</p>
+                <div class="lock-mystery-dots">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </section>
+
         <!-- SECTION 1: Intro Screen -->
-        <section id="intro-screen" class="screen active">
+        <section id="intro-screen" class="screen">
             <div class="stars-background"></div>
             <div class="hogwarts-silhouette"></div>
             
@@ -196,6 +232,7 @@
     </main>
 
     <!-- JavaScript -->
+    <script src="js/config.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/main.js"></script>

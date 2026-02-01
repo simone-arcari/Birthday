@@ -5,10 +5,11 @@
 
 // Application State
 const AppState = {
-    currentScreen: 'intro',
-    screens: ['intro', 'owl', 'letter-sealed', 'letter-content', 'countdown'],
+    currentScreen: 'lock',
+    screens: ['lock', 'intro', 'owl', 'letter-sealed', 'letter-content', 'countdown'],
     isAnimating: false,
-    audioStarted: false
+    audioStarted: false,
+    isUnlocked: false
 };
 
 // DOM Elements
@@ -17,6 +18,11 @@ const DOM = {
     audioToggle: null,
     audioIcon: null,
     countdown: {
+        hours: null,
+        minutes: null,
+        seconds: null
+    },
+    lockCountdown: {
         hours: null,
         minutes: null,
         seconds: null
@@ -30,8 +36,11 @@ const DOM = {
 let audioManager;
 let particleSystem;
 
-// Target dinner date/time
-const DINNER_DATE = new Date('2026-02-01T19:15:00+01:00');
+// Target dinner date/time (from config or default)
+const DINNER_DATE = new Date(CONFIG?.DINNER_DATE || '2026-02-01T19:15:00+01:00');
+
+// Unlock time - 18:45 on February 1st, 2026 (from config or default)
+const UNLOCK_TIME = new Date(CONFIG?.UNLOCK_TIME || '2026-02-01T18:45:00+01:00');
 
 /* =====================================================
    INITIALIZATION
@@ -43,9 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initEventListeners();
     generateCandles();
     startCountdown();
+    startLockCountdown();
     
-    // Show intro screen
-    showScreen('intro');
+    // Check if already unlocked
+    checkUnlockStatus();
 });
 
 function initDOM() {
@@ -59,10 +69,15 @@ function initDOM() {
     DOM.audioToggle = document.getElementById('audio-toggle');
     DOM.audioIcon = DOM.audioToggle?.querySelector('.audio-icon');
     
-    // Countdown elements
+    // Countdown elements (final countdown)
     DOM.countdown.hours = document.getElementById('hours');
     DOM.countdown.minutes = document.getElementById('minutes');
     DOM.countdown.seconds = document.getElementById('seconds');
+    
+    // Lock countdown elements
+    DOM.lockCountdown.hours = document.getElementById('lock-hours');
+    DOM.lockCountdown.minutes = document.getElementById('lock-minutes');
+    DOM.lockCountdown.seconds = document.getElementById('lock-seconds');
     
     // Other elements
     DOM.candlesContainer = document.getElementById('candles');
@@ -114,6 +129,110 @@ function initEventListeners() {
             e.stopPropagation();
             restartExperience();
         });
+    }
+    
+    // Lock screen - click to proceed (only when unlocked)
+    if (DOM.screens.lock) {
+        DOM.screens.lock.addEventListener('click', proceedFromLockScreen);
+    }
+}
+
+/* =====================================================
+   LOCK SCREEN MANAGEMENT
+   ===================================================== */
+
+function checkUnlockStatus() {
+    // Check if bypass is enabled in config
+    if (CONFIG?.BYPASS_LOCK_SCREEN === true) {
+        if (CONFIG?.DEBUG_MODE) console.log('🔓 Lock screen bypassed via config');
+        AppState.isUnlocked = true;
+        showScreen('intro');
+        return;
+    }
+    
+    const now = new Date();
+    
+    if (now >= UNLOCK_TIME) {
+        // Already unlocked - go directly to intro
+        AppState.isUnlocked = true;
+        showScreen('intro');
+    } else {
+        // Still locked - show lock screen
+        showScreen('lock');
+    }
+}
+
+function startLockCountdown() {
+    updateLockCountdown();
+    setInterval(updateLockCountdown, 1000);
+}
+
+function updateLockCountdown() {
+    const now = new Date();
+    const diff = UNLOCK_TIME - now;
+    
+    if (diff <= 0) {
+        // Time's up - unlock!
+        if (!AppState.isUnlocked) {
+            unlockExperience();
+        }
+        
+        // Show zeros
+        if (DOM.lockCountdown.hours) DOM.lockCountdown.hours.textContent = '00';
+        if (DOM.lockCountdown.minutes) DOM.lockCountdown.minutes.textContent = '00';
+        if (DOM.lockCountdown.seconds) DOM.lockCountdown.seconds.textContent = '00';
+        return;
+    }
+    
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    if (DOM.lockCountdown.hours) DOM.lockCountdown.hours.textContent = String(hours).padStart(2, '0');
+    if (DOM.lockCountdown.minutes) DOM.lockCountdown.minutes.textContent = String(minutes).padStart(2, '0');
+    if (DOM.lockCountdown.seconds) DOM.lockCountdown.seconds.textContent = String(seconds).padStart(2, '0');
+}
+
+function unlockExperience() {
+    AppState.isUnlocked = true;
+    
+    const lockScreen = DOM.screens.lock;
+    if (lockScreen) {
+        lockScreen.classList.add('unlocked');
+        
+        // Update text to indicate it's unlocked
+        const patience = lockScreen.querySelector('.lock-patience');
+        if (patience) {
+            patience.textContent = 'Tocca per scoprire la sorpresa! ✨';
+        }
+        
+        const subtitle = lockScreen.querySelector('.lock-subtitle');
+        if (subtitle) {
+            subtitle.textContent = 'È il momento!';
+        }
+    }
+}
+
+function proceedFromLockScreen(e) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    // Only proceed if unlocked
+    if (!AppState.isUnlocked) {
+        // Shake the countdown to indicate it's still locked
+        const container = document.querySelector('.lock-countdown-container');
+        if (container) {
+            container.classList.add('shake');
+            setTimeout(() => container.classList.remove('shake'), 500);
+        }
+        return;
+    }
+    
+    // Proceed to intro
+    if (AppState.currentScreen === 'lock') {
+        transitionToScreen('intro', 500);
     }
 }
 
