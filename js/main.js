@@ -31,7 +31,7 @@ let audioManager;
 let particleSystem;
 
 // Target dinner date/time
-const DINNER_DATE = new Date('2026-02-02T19:15:00+01:00');
+const DINNER_DATE = new Date('2026-02-01T19:15:00+01:00');
 
 /* =====================================================
    INITIALIZATION
