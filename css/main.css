@@ -479,7 +479,9 @@ body {
     position: absolute;
     font-size: 4rem;
     filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
-    transform: translateX(-100px);
+    left: -100px;
+    top: 30%;
+    opacity: 0;
 }
 
 .owl-body {
