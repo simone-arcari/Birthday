@@ -82,26 +82,39 @@ function initManagers() {
 
 function initEventListeners() {
     // Audio toggle
-    DOM.audioToggle?.addEventListener('click', toggleAudio);
+    DOM.audioToggle?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleAudio();
+    });
     
     // Intro screen - tap to start
-    DOM.screens.intro?.addEventListener('click', startExperience);
-    DOM.screens.intro?.addEventListener('touchend', startExperience);
+    if (DOM.screens.intro) {
+        DOM.screens.intro.addEventListener('click', startExperience);
+    }
     
     // Wax seal - break to open letter
-    DOM.waxSeal?.addEventListener('click', breakSeal);
-    DOM.waxSeal?.addEventListener('touchend', breakSeal);
+    if (DOM.waxSeal) {
+        DOM.waxSeal.addEventListener('click', (e) => {
+            e.stopPropagation();
+            breakSeal(e);
+        });
+    }
     
     // Continue button
-    DOM.continueBtn?.addEventListener('click', goToCountdown);
+    if (DOM.continueBtn) {
+        DOM.continueBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            goToCountdown();
+        });
+    }
     
     // Restart button
-    DOM.restartBtn?.addEventListener('click', restartExperience);
-    
-    // Prevent double-tap zoom on mobile
-    document.addEventListener('touchend', (e) => {
-        e.preventDefault();
-    }, { passive: false });
+    if (DOM.restartBtn) {
+        DOM.restartBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            restartExperience();
+        });
+    }
 }
 
 /* =====================================================
@@ -109,11 +122,13 @@ function initEventListeners() {
    ===================================================== */
 
 function showScreen(screenName) {
-    if (AppState.isAnimating) return;
+    console.log('Showing screen:', screenName);
     
     // Hide all screens
     Object.values(DOM.screens).forEach(screen => {
-        screen.classList.remove('active');
+        if (screen) {
+            screen.classList.remove('active');
+        }
     });
     
     // Show target screen
@@ -121,10 +136,15 @@ function showScreen(screenName) {
     if (targetScreen) {
         targetScreen.classList.add('active');
         AppState.currentScreen = screenName;
+        console.log('Screen activated:', screenName);
+    } else {
+        console.error('Screen not found:', screenName);
     }
 }
 
 function transitionToScreen(screenName, delay = 500) {
+    console.log('Transitioning to:', screenName, 'isAnimating:', AppState.isAnimating);
+    
     if (AppState.isAnimating) return;
     AppState.isAnimating = true;
     
@@ -136,6 +156,9 @@ function transitionToScreen(screenName, delay = 500) {
     }
     
     setTimeout(() => {
+        // Reset isAnimating BEFORE showing screen
+        AppState.isAnimating = false;
+        
         showScreen(screenName);
         
         const newScreen = DOM.screens[screenName];
@@ -149,8 +172,6 @@ function transitionToScreen(screenName, delay = 500) {
         if (currentScreen) {
             currentScreen.classList.remove('fade-out');
         }
-        
-        AppState.isAnimating = false;
         
         // Trigger screen-specific animations
         onScreenEnter(screenName);
@@ -179,8 +200,15 @@ function onScreenEnter(screenName) {
    ===================================================== */
 
 function startExperience(e) {
-    if (e) e.preventDefault();
-    if (AppState.currentScreen !== 'intro') return;
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    // Evita doppi click
+    if (AppState.currentScreen !== 'intro' || AppState.isAnimating) return;
+    
+    console.log('Starting experience...');
     
     // Start audio on first user interaction
     if (!AppState.audioStarted) {
