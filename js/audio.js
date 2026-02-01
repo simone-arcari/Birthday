@@ -7,7 +7,7 @@ class MagicalAudioManager {
     constructor() {
         this.sounds = {};
         this.backgroundMusic = null;
-        this.isMuted = false;
+        this.isMuted = true;  // Inizia muted - l'utente deve attivare
         this.isLoaded = false;
         this.volume = 0.4;
         this.audioContext = null;

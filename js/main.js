@@ -354,8 +354,13 @@ function startExperience(e) {
     
     console.log('Starting experience...');
     
-    // Start audio on first user interaction
+    // Attiva audio e aggiorna icona
     if (!AppState.audioStarted) {
+        audioManager.isMuted = false;
+        if (DOM.audioIcon) {
+            DOM.audioIcon.textContent = '🔊';
+        }
+        DOM.audioToggle?.classList.add('playing');
         audioManager.playTrack('hedwigsTheme', { volume: 0.4 });
         AppState.audioStarted = true;
     }
